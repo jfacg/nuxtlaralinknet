@@ -26,6 +26,9 @@ class Service extends Model
         'usuario_id',
         'tecnico_id',
         'cliente_id',
+        'vendedor_id',
+        'contato'
+
     ];
 
     public function rules($id = '')
@@ -60,6 +63,11 @@ class Service extends Model
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id', 'id');
+    }
+
+    public function vendedor()
+    {
+        return $this->belongsTo(User::class, 'vendedor_id', 'id');
     }
 
     public function tecnico()

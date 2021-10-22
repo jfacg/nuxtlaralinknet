@@ -15,7 +15,7 @@ class CreateServicesTable extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('servico');
+            $table->string('tipo');
             $table->dateTime('dataAbertura')->useCurrent();
             $table->dateTime('dataAgendamento')->nullable();
             $table->dateTime('dataVencimento')->nullable();
@@ -28,12 +28,19 @@ class CreateServicesTable extends Migration
             $table->text('plano');
             $table->string('status');
             $table->text('historico')->nullable();
+            $table->text('contato')->nullable();
+
 
             $table->unsignedBigInteger('usuario_id');
+            $table->unsignedBigInteger('vendedor_id');
             $table->unsignedBigInteger('tecnico_id')->nullable();
             $table->unsignedBigInteger('cliente_id');
 
             $table->foreign('usuario_id')
+                        ->references('id')
+                        ->on('users');
+
+            $table->foreign('vendedor_id')
                         ->references('id')
                         ->on('users');
 

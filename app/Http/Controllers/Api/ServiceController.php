@@ -23,7 +23,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = $this->entity->with(['cliente', 'usuario', 'tecnico'])->get();
+        $services = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor'])->get();
         return response()->json($services, 200);
     }
 
@@ -60,7 +60,7 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $service = $this->entity->with(['cliente', 'usuario', 'tecnico'])->find($id);
+        $service = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor'])->find($id);
 
         if (!$service) {
             return response()->json(['message' => 'Serviço Não Encontrado'], 404);
