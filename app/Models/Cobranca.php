@@ -15,7 +15,8 @@ class Cobranca extends Model
         'status',
         'boletoixc_id',
         'usuario_id',
-        'mensagem'
+        'mensagem',
+        'tipoAgendamento'
     ];
 
     public function usuario()

@@ -40,7 +40,7 @@ class BoletoixcController extends Controller
         
         foreach ($boletos as $boleto) {
             $cobrancas = $this->cobranca->with(['usuario'])->where('boletoixc_id', $boleto->id)->get();
-
+           
             foreach ($cobrancas as $cobranca) {
                 if ($cobranca->dataAgendamento < $hoje && $cobranca->dataAgendamento != null) {
                     $cobranca->status = "VENCIDO";

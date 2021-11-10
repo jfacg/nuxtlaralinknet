@@ -18,6 +18,7 @@ class CreateCobrancasTable extends Migration
             $table->timestamps();
             $table->dateTime('dataAbertura')->useCurrent();
             $table->dateTime('dataAgendamento')->nullable();
+            $table->string('tipoAgendamento')->nullable();
             $table->string('status')->nullable();
             $table->bigInteger('boletoixc_id');
             $table->text('mensagem');
