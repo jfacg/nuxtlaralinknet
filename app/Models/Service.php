@@ -21,13 +21,15 @@ class Service extends Model
         'pagamento',
         'observacao',
         'plano',
+        'valorPlano',
         'status',
         'historico',
         'usuario_id',
         'tecnico_id',
         'cliente_id',
         'vendedor_id',
-        'contato'
+        'contato',
+        'indicacao'
 
     ];
 

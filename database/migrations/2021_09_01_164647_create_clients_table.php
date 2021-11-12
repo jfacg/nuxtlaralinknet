@@ -17,6 +17,7 @@ class CreateClientsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('cpf')->unique();
+            $table->string('rg')->nullable();
             $table->date('birthday')->nullable();
             $table->string('cellPhone1');
             $table->string('cellPhone2')->nullable();

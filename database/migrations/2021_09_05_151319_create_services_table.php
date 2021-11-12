@@ -26,9 +26,11 @@ class CreateServicesTable extends Migration
             $table->string('pagamento');
             $table->text('observacao')->nullable();
             $table->text('plano');
+            $table->double('valorPlano', 8, 2)->default(0);
             $table->string('status');
             $table->text('historico')->nullable();
             $table->text('contato')->nullable();
+            $table->text('indicacao')->nullable();
 
 
             $table->unsignedBigInteger('usuario_id');
