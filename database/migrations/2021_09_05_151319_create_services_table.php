@@ -31,6 +31,8 @@ class CreateServicesTable extends Migration
             $table->text('historico')->nullable();
             $table->text('contato')->nullable();
             $table->text('indicacao')->nullable();
+            $table->string('boletodigital')->default('N');
+            $table->string('boletogerado')->default('N');
 
 
             $table->unsignedBigInteger('usuario_id');

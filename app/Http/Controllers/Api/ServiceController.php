@@ -27,6 +27,17 @@ class ServiceController extends Controller
         return response()->json($services, 200);
     }
 
+    public function gerarboletos()
+    {
+        $services = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor'])
+        ->where('boletogerado', '=', 'N')
+        ->where('status', '=', 'EXECUTADO')
+        ->where('tipo', '=', 'INSTALAÇÃO')
+        ->orderBy('dataExecucao', 'asc')
+        ->get();
+        return response()->json($services, 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -120,4 +131,6 @@ class ServiceController extends Controller
 
         return response()->json($delete, 200);
     }
+
+
 }

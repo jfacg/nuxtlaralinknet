@@ -127,12 +127,12 @@ class PortController extends Controller
 
 
         if (!$port = $this->entity->find($id)) {
-            return response()->json(['message' => 'box Not Found'], 404);
+            return response()->json(['message' => 'porta Not Found'], 404);
         }
 
 
         if (!$update = $port->update($data)) {
-            return response()->json(['message' => 'box Not Update'], 404);
+            return response()->json(['message' => 'porta Not Update'], 404);
         }
 
 

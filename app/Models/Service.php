@@ -29,7 +29,10 @@ class Service extends Model
         'cliente_id',
         'vendedor_id',
         'contato',
-        'indicacao'
+        'indicacao',
+        'boletodigital',
+        'boletogerado',
+
 
     ];
 
