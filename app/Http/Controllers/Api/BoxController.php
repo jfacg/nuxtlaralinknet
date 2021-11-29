@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Box;
+use App\Models\Ocupacao;
 use Illuminate\Http\Request;
 
 class BoxController extends Controller
@@ -25,6 +26,61 @@ class BoxController extends Controller
         $boxes = $this->entity->all();
 
         return response()->json(['data' => $boxes], 200);
+    }
+
+    public function ocupacao()
+    {
+        $caixas = [];
+        
+        $boxes = $this->entity
+                    ->with(['ports'])
+                    ->where('status', '=', 'ATIVA')
+                    ->get();
+        
+
+        foreach ($boxes as $box) {
+            $caixa = (object)[
+                'id' => '',
+                'caixa' => '',
+                'portaAtiva' => 0,
+                'portaOcupada' => 0,
+                'portaCancelada' => 0,
+                'portaUtilizada' => 0,
+                'portas' => 0,
+                'ocupacao' => 0,
+                'endereco' => '',
+                'sinal' => '',
+                
+            ];
+           
+            foreach ($box->ports as $port) {
+                if ($port->status ===  "ATIVA") {
+                    ++$caixa->portaAtiva;
+                    ++$caixa->portaUtilizada;
+                }
+                if ($port->status ===  "OCUPADA") {
+                    ++$caixa->portaOcupada;
+                    ++$caixa->portaUtilizada;
+                }
+                if ($port->status ===  "CANCELADO") {
+                    ++$caixa->portaCancelada;
+                    ++$caixa->portaUtilizada;
+                }
+            }
+
+            $caixa->id = $box->id;
+            $caixa->caixa = $box->name;
+            $caixa->portas = $box->numberPorts;
+            $caixa->endereco = $box->address;
+            $caixa->sinal = $box->signal;
+            $caixa->ocupacao = ($caixa->portaUtilizada / $caixa->portas ) * 100;
+
+
+            array_push($caixas, $caixa);
+        }
+
+
+        return response()->json(['data' => $caixas, 'teste' => $boxes], 200);
     }
 
     /**
