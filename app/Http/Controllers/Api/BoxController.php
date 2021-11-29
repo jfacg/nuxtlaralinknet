@@ -35,6 +35,7 @@ class BoxController extends Controller
         $boxes = $this->entity
                     ->with(['ports'])
                     ->where('status', '=', 'ATIVA')
+                    ->orderBy('name', 'asc')
                     ->get();
         
 
@@ -80,7 +81,7 @@ class BoxController extends Controller
         }
 
 
-        return response()->json(['data' => $caixas, 'teste' => $boxes], 200);
+        return response()->json(['data' => $caixas], 200);
     }
 
     /**
