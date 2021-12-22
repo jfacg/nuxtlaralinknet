@@ -41,7 +41,7 @@ class AuthUserController extends Controller
     {
         $userAuth = $request->user();
 
-        $user = $this->user->with(['roles', 'roles.permissions'])->find($userAuth->id);
+        $user = $this->user->with(['roles', 'roles.permissions', 'empresa'])->find($userAuth->id);
         // $permissions = $this->role->with(['permissions'])->find($user->roles[0]->id);
 
         return response()->json($user);

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
      * Routes Clients
      */
     Route::get('/gerarboletos', [ServiceController::class, 'gerarboletos']);
+    Route::get('/listarportecnico/{idTecnico}', [ServiceController::class, 'listarPorTecnico']);
     Route::get('/{id}', [ServiceController::class, 'show']);
     Route::post('', [ServiceController::class, 'store']);
     Route::put('/{id}', [ServiceController::class, 'update']);

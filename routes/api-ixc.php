@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
      */
     Route::get('/planos', [IxcController::class, 'listarPlanos']);
     Route::get('/cobrancas/boletosAbertos', [BoletoixcController::class, 'boletosAbertos']);
+    Route::get('/cliente/buscarPorCpf/{cpf}', [ClientIxcController::class, 'buscarPorCpf']);
     Route::get('/cliente/{id}', [ClientIxcController::class, 'show']);
 
 

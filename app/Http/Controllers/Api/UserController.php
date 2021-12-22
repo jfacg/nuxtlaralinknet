@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->entity->with(['roles'])->get();
+        $users = $this->entity->with(['roles', 'empresa'])->get();
 
         return response()->json($users);
     }
@@ -67,7 +67,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        if (!$user = $this->entity->with(['roles'])->find($id)) {
+        if (!$user = $this->entity->with(['roles', 'empresa'])->find($id)) {
             return response()->json(['message' => 'User Not Found'], 404);
         }
 

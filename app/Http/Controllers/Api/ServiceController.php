@@ -27,6 +27,15 @@ class ServiceController extends Controller
         return response()->json($services, 200);
     }
 
+    public function listarPorTecnico($idTecnico)
+    {
+        $services = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor'])
+                    ->where([['tecnico_id', '=', $idTecnico], ['status', '=', 'DESPACHADO'] ])
+                    ->orWhere([['tecnico_id', '=', $idTecnico], ['status', '=', 'REMANEJADO'] ])
+                    ->get();
+        return response()->json(['data' => $services], 200);
+    }
+
     public function gerarboletos()
     {
         $services = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor'])
@@ -79,6 +88,8 @@ class ServiceController extends Controller
 
         return response()->json($service, 200);
     }
+
+ 
 
     /**
      * Update the specified resource in storage.
