@@ -12,13 +12,13 @@ class Clientixc extends Model
     protected $connection = 'mysql2';
     protected $table = 'cliente';
 
-    public function search($request, $totalPage = 10)
+    public function pesquisar($request)
     {
-        $key_search = $request->key_search;
+        $key_search = $request;
 
         return $this
             ->where('razao', 'LIKE', "%{$key_search}%")
-            ->paginate($totalPage);
+            ->get();
     }
 
     public function city()

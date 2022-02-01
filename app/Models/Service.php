@@ -32,6 +32,26 @@ class Service extends Model
         'indicacao',
         'boletodigital',
         'boletogerado',
+        'cep',
+        'logradouro',
+        'numero',
+        'complemento',
+        'bairro',
+        'cidade',
+        'uf',
+        'antigoCep',
+        'antigoLogradouro',
+        'antigoNumero',
+        'antigoBairro',
+        'antigaCidade',
+        'antigaUf',
+        'clienteNome',
+        'clienteCpf',
+        'clienteIdIxc',
+        'clienteEmail',
+        'clienteContato',
+        'reclamante',
+        'tipoReclamacao_id'
 
 
     ];
@@ -45,16 +65,12 @@ class Service extends Model
             'dataVencimento' => ['date', 'nullable'],
             'dataExecucao' => ['date', 'nullable'],
             'dataFechamento' => ['date', 'nullable'],
-            'vencimento' => ['numeric'],
-            'valorInstalacao' => ['numeric'],
-            'pagamento' => ['string'],
             'observacao' => ['string', 'nullable', 'min:3', 'max:255'],
-            'plano' => ['string'],
             'status' => ['string'],
             'historico' => ['string', 'nullable', 'min:3', 'max:255'],
             'usuario_id' => ['numeric'],
             'tecnico_id' => ['nullable', 'numeric'],
-            'cliente_id' => ['numeric'],
+            'cliente_id' => ['nullable','numeric'],
         ];
 
         return $rules;
@@ -78,6 +94,11 @@ class Service extends Model
     public function tecnico()
     {
         return $this->belongsTo(User::class, 'tecnico_id', 'id');
+    }
+
+    public function tipo()
+    {
+        return $this->belongsTo(Tipo::class, 'tipoReclamacao_id', 'id');
     }
 
 

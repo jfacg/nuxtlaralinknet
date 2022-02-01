@@ -32,6 +32,7 @@ class ServiceController extends Controller
         $services = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor'])
                     ->where([['tecnico_id', '=', $idTecnico], ['status', '=', 'DESPACHADO'] ])
                     ->orWhere([['tecnico_id', '=', $idTecnico], ['status', '=', 'REMANEJADO'] ])
+                    ->orderBy('dataAgendamento', 'asc')
                     ->get();
         return response()->json(['data' => $services], 200);
     }

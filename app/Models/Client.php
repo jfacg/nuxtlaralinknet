@@ -48,5 +48,7 @@ class Client extends Model
         return $rules;
     }
 
+    
+
 
 }

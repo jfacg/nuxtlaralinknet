@@ -21,6 +21,14 @@ class ClientIxcController extends Controller
     {
         $clientIxc = $this->clientIxc->find($id);
 
+        if ($clientIxc) {
+            $logins = $this->loginIxc
+                    ->where('id_cliente', '=', $clientIxc->id)
+                    ->orderBy('id_contrato', 'desc')
+                    ->get();
+            $clientIxc->logins = $logins;
+        }
+
         return response()->json($clientIxc, 200);
     
     }
@@ -35,6 +43,13 @@ class ClientIxcController extends Controller
                     ->get();
             $clientIxc->logins = $logins;
         }
+
+        return response()->json(['data' => $clientIxc], 200);
+    }
+
+    public function buscarPorNome ($nome)
+    {
+        $clientIxc = $this->clientIxc->pesquisar($nome);
 
         return response()->json(['data' => $clientIxc], 200);
     }
