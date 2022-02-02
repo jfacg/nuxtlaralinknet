@@ -104,6 +104,7 @@ class ServiceController extends Controller
             $cliente = $this->clienteixc->where('cnpj_cpf', '=', $this->formatarCpf($service->cliente->cpf))->first();
 
             if ($cliente) {
+                
                 $logins = $this->loginIxc
                         ->where('id_cliente', '=', $cliente->id)
                         ->orderBy('id_contrato', 'desc')

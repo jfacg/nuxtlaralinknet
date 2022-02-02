@@ -89,7 +89,7 @@ class Service extends Model
 
     public function vendedor()
     {
-        return $this->belongsTo(User::class, 'vendedor_id', 'id');
+        return  $this->belongsTo(User::class, 'vendedor_id', 'id');
     }
 
     public function tecnico()
