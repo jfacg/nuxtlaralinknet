@@ -51,7 +51,8 @@ class Service extends Model
         'clienteEmail',
         'clienteContato',
         'reclamante',
-        'tipoReclamacao_id'
+        'tipoReclamacao_id',
+        'relatoCliente'
 
 
     ];
@@ -96,7 +97,7 @@ class Service extends Model
         return $this->belongsTo(User::class, 'tecnico_id', 'id');
     }
 
-    public function tipo()
+    public function tipoReclamacao()
     {
         return $this->belongsTo(Tipo::class, 'tipoReclamacao_id', 'id');
     }
