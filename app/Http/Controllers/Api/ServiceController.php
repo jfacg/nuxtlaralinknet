@@ -31,6 +31,14 @@ class ServiceController extends Controller
         return response()->json($services, 200);
     }
 
+    public function servicosAbertos()
+    {
+        $services = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor', 'tipoReclamacao'])
+                    ->where([['status', '!=', 'BAIXADO'], ['status', '!=', 'EXECUTADO'], ['status', '!=', 'CANCELADO']])
+                    ->get();
+        return response()->json($services, 200);
+    }
+
     public function listarPorTecnico($idTecnico)
     {
         $services = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor', 'tipoReclamacao'])
