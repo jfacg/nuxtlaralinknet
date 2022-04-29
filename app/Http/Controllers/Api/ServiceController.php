@@ -35,6 +35,7 @@ class ServiceController extends Controller
     {
         $services = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor', 'tipoReclamacao'])
                     ->where([['status', '!=', 'BAIXADO'], ['status', '!=', 'EXECUTADO'], ['status', '!=', 'CANCELADO']])
+                    ->orderBy('dataAgendamento', 'asc')
                     ->get();
         return response()->json($services, 200);
     }
@@ -76,7 +77,7 @@ class ServiceController extends Controller
             return response()->json($messages, 400);
         }
 
-        $service = $this->entity->create($data);
+        $service = $this->entity->update($data);
 
         if (!$service) {
             return response()->json(['error' => 'error_insert', 500]);

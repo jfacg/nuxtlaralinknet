@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Tipo;
+use App\Models\Maquina;
 use Illuminate\Http\Request;
 
-class TipoController extends Controller
+class MaquinaController extends Controller
 {
-    protected $entity;
+    protected $maquina;
 
-    public function __construct (Tipo $tipo)
+    public function __construct (Maquina $maquina)
     {
-        $this->entity = $tipo;
+        $this->maquina = $maquina;
     }
 
     public function index()
     {
-        $tipos = $this->entity->all();
+        $maquinas = $this->maquina->all();
 
-        return response()->json(['data' => $tipos], 200);
+        return response()->json(['data' => $maquinas], 200);
     }
 
    
@@ -27,37 +27,37 @@ class TipoController extends Controller
     {
         $data = $request->all();
 
-        $validate = validator($data, $this->entity->rules());
+        $validate = validator($data, $this->maquina->rules());
 
         if ($validate->fails()) {
             $messages = $validate->messages();
             return response()->json( $messages, 500);
         }
 
-        if (!$tipo = $this->entity->create($data)) {
+        if (!$maquina = $this->maquina->create($data)) {
             return response()->json(['error' => 'error_insert', 500]);
         }
 
-        return response()->json(['data' => $tipo], 201);
+        return response()->json(['data' => $maquina], 201);
     }
 
    
     public function show($id)
     {
-        if (!$tipo = $this->entity->find($id)) {
+        if (!$maquina = $this->maquina->find($id)) {
             return response()->json(['message' => 'permission Not Found'], 404);
         }
 
-        return response()->json(['data' => $tipo], 200);
+        return response()->json(['data' => $maquina], 200);
     }
 
     public function listarPorClasse($classe)
     {
-        if (!$tipo = $this->entity->where('tipoClasse', '=', $classe)->get()) {
+        if (!$maquina = $this->maquina->where('maquinaClasse', '=', $classe)->get()) {
             return response()->json(['message' => 'permission Not Found'], 404);
         }
 
-        return response()->json(['data' => $tipo], 200);
+        return response()->json(['data' => $maquina], 200);
     }
 
 
@@ -65,18 +65,18 @@ class TipoController extends Controller
     {
         $data = $request->all();
 
-        $validate = validator($data, $this->entity->rules($id, 'PUT'));
+        $validate = validator($data, $this->maquina->rules($id, 'PUT'));
 
         if ($validate->fails()) {
             $messages = $validate->messages();
             return response()->json(['validade.error', $messages], 500);
         }
 
-        if (!$tipo = $this->entity->find($id)) {
+        if (!$maquina = $this->maquina->find($id)) {
             return response()->json(['message' => 'permission Not Found'], 404);
         }
 
-        if (!$update = $tipo->update($data)) {
+        if (!$update = $maquina->update($data)) {
             return response()->json(['message' => 'permission Not Update'], 500);
         }
 
@@ -86,11 +86,11 @@ class TipoController extends Controller
  
     public function destroy($id)
     {
-        if (!$tipo = $this->entity->find($id)) {
+        if (!$maquina = $this->maquina->find($id)) {
             return response()->json(['message' => 'permission Not Found'], 404);
         }
 
-        if (!$delete =  $tipo->delete()) {
+        if (!$delete =  $maquina->delete()) {
             return response()->json(['message' => 'permission Not Delete'], 500);
         }
 
