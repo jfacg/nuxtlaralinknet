@@ -77,7 +77,7 @@ class ServiceController extends Controller
             return response()->json($messages, 400);
         }
 
-        $service = $this->entity->update($data);
+        $service = $this->entity->create($data);
 
         if (!$service) {
             return response()->json(['error' => 'error_insert', 500]);

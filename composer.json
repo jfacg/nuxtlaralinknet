@@ -9,10 +9,12 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "laravel-notification-channels/telegram": "^1.0",
         "laravel/framework": "^8.40",
         "laravel/sanctum": "^2.11",
         "laravel/telescope": "^4.5",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "telegram-bot/api": "^2.3"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

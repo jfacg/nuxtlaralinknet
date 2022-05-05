@@ -5,6 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Maquina;
 use Illuminate\Http\Request;
+use NotificationChannels\Telegram\TelegramChannel;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\TelegramNotification;
+use App\Notifications\NotificationMaquinaFusao;
+use App\Models\Telegram\AlertMaquina;
+// use Illuminate\Notifications\Notification;
 
 class MaquinaController extends Controller
 {
@@ -79,6 +86,11 @@ class MaquinaController extends Controller
         if (!$update = $maquina->update($data)) {
             return response()->json(['message' => 'permission Not Update'], 500);
         }
+
+        if ($update) {
+            AlertMaquina::enviarMensagem(strtoupper("***".$data['titulo']."*** "."\n \nCOLABORADOR:  ".$data['usuario']."\n MAQUINA:  ".$data['maquinaNome']."\n STATUS:  ".$data['maquinaStatus']));
+        }
+
 
         return response()->json(['data' => $update], 200);
     }
