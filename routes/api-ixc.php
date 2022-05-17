@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
     Route::get('/cliente/buscarPorNome/{nome}', [ClientIxcController::class, 'buscarPorNome']);
     Route::get('/cliente/{id}', [ClientIxcController::class, 'show']);
 
+    Route::get('/telegram', [ClientIxcController::class, 'telegram']);
+    Route::post('/loginoffline/{status}', [ClientIxcController::class, 'loginoffline']);
+
 
 
 

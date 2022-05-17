@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\TelegramNotification;
 use App\Notifications\NotificationMaquinaFusao;
 use App\Models\Telegram\AlertMaquina;
+use App\Utils\MonitorLogin;
 // use Illuminate\Notifications\Notification;
+
+use TelegramBot\Api\BotApi;
 
 class MaquinaController extends Controller
 {
@@ -90,7 +93,6 @@ class MaquinaController extends Controller
         if ($update) {
             AlertMaquina::enviarMensagem(strtoupper("***".$data['titulo']."*** "."\n \nCOLABORADOR:  ".$data['usuario']."\n MAQUINA:  ".$data['maquinaNome']."\n STATUS:  ".$data['maquinaStatus']));
         }
-
 
         return response()->json(['data' => $update], 200);
     }
