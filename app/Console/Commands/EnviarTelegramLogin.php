@@ -44,7 +44,11 @@ class EnviarTelegramLogin extends Command
      */
     public function handle()
     {
-        $this->loginoffline();
+        $ambiente = env('APP_ENV');
+        if ($ambiente == 'production') {
+            $this->loginoffline();
+        }
+        
     }
 
 
