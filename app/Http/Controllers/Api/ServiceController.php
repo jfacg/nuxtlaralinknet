@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Clientixc;
 use App\Models\Loginixc;
 use App\Models\Service;
+use App\Models\Telegram\AlertReclamacoes;
+use App\Models\Telegram\AlertTeste;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -37,7 +39,27 @@ class ServiceController extends Controller
                     ->where([['status', '!=', 'BAIXADO'], ['status', '!=', 'EXECUTADO'], ['status', '!=', 'CANCELADO']])
                     ->orderBy('dataAgendamento', 'asc')
                     ->get();
-        return response()->json($services, 200);
+        
+        $servicos = [];
+
+        foreach ($services as $servico) {
+            if ($servico->tipo == 'REPARO') {
+                $repetidas = $this->entity
+                            ->where('clienteIdIxc', '=', $servico->clienteIdIxc)
+                            ->where('tipo', '=', 'REPARO')
+                            ->count();
+            
+                $servico->repetidas = $repetidas - 1;
+                array_push($servicos, $servico);
+
+            } else {
+                $servico->repetidas = 0;
+                array_push($servicos, $servico);
+            }
+        }
+                    
+
+        return response()->json($servicos, 200);
     }
 
     public function listarPorTecnico($idTecnico)
@@ -81,6 +103,30 @@ class ServiceController extends Controller
 
         if (!$service) {
             return response()->json(['error' => 'error_insert', 500]);
+        }
+
+        if ($service->tipo == 'REPARO') {
+            $repetidas = $this->entity
+                        ->where('clienteIdIxc', '=', $service->clienteIdIxc)
+                        ->where('tipo', '=', 'REPARO')
+                        ->count();
+        
+            if ($repetidas > 0) {
+                $reparos = $this->entity
+                        ->where('clienteIdIxc', '=', $service->clienteIdIxc)
+                        ->where('tipo', '=', 'REPARO')
+                        ->orderBy('dataExecucao', 'desc')
+                        ->get();
+                
+                $texto = "########\n".$repetidas." RECLAMAÇÕES \n########";
+                
+                foreach ($reparos as $reparo) {
+                    $texto = $texto."\n\nCliente: ".$reparo->clienteNome."\nReclamação: ".$reparo->relatoCliente."\nReclamante: ".$reparo->reclamante
+                                ."\nBaixa: ".$reparo->observacao."\nStatus: ".$reparo->status."\nData: ".$reparo->dataExecucao;
+                }
+
+                AlertReclamacoes::enviarMensagem($texto);
+            }
         }
 
         return response()->json($service, 201);
