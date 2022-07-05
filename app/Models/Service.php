@@ -54,7 +54,8 @@ class Service extends Model
         'clienteContato',
         'reclamante',
         'tipoReclamacao_id',
-        'relatoCliente'
+        'relatoCliente',
+        'pesqInstalacao_id'
 
 
     ];
@@ -103,6 +104,13 @@ class Service extends Model
     {
         return $this->belongsTo(Tipo::class, 'tipoReclamacao_id', 'id');
     }
+
+    public function pesqInstalacao()
+    {
+        return $this->belongsTo(Pesqinstalacao::class, 'pesqInstalacao_id', 'id');
+    }
+
+    
 
 
 }

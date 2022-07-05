@@ -24,16 +24,9 @@ Route::group([
     Route::post('/auth/logout', [AuthUserController::class, 'logout']);
 });
 
-// Route::prefix('v1/betanalise')->middleware([])->group(base_path('routes/api-betanalise.php'));
-// Route::prefix('v1/betsuperanalises')->middleware([])->group(base_path('routes/api-betsuperanalises.php'));
-// Route::prefix('v1/betsupers')->middleware([])->group(base_path('routes/api-betsupers.php'));
-// Route::prefix('v1/betpremieranalises')->middleware([])->group(base_path('routes/api-betpremieranalises.php'));
-// Route::prefix('v1/betpremiers')->middleware([])->group(base_path('routes/api-betpremiers.php'));
-// Route::prefix('v1/betcopaanalises')->middleware([])->group(base_path('routes/api-betcopaanalises.php'));
-// Route::prefix('v1/betcopas')->middleware([])->group(base_path('routes/api-betcopas.php'));
-// Route::prefix('v1/beteuroanalises')->middleware([])->group(base_path('routes/api-beteuroanalises.php'));
-// Route::prefix('v1/beteuros')->middleware([])->group(base_path('routes/api-beteuros.php'));
 
+Route::prefix('v1/pesqInstalacao')->middleware([])->group(base_path('routes/api-pesqInstalacao.php'));
+Route::prefix('v1/equipamentos')->middleware([])->group(base_path('routes/api-equipamentos.php'));
 Route::prefix('v1/maquinas')->middleware([])->group(base_path('routes/api-maquinas.php'));
 Route::prefix('v1/tipos')->middleware([])->group(base_path('routes/api-tipos.php'));
 Route::prefix('v1/watches')->middleware([])->group(base_path('routes/api-watches.php'));

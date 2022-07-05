@@ -15,12 +15,13 @@ class CreateEquipamentosTable extends Migration
     {
         Schema::create('equipamentos', function (Blueprint $table) {
             $table->id();
-            $table->string('equippatrimonio')->nullable();
+            $table->string('equippatrimonio')->nullable()->unique();
             $table->string('equipnome')->nullable();
             $table->string('equipmarca')->nullable();
             $table->string('equipmac')->nullable();
             $table->string('equipgpon')->nullable();
             $table->string('equipsenha')->nullable();
+            $table->string('equipstatus')->nullable();
             $table->timestamps();
         });
     }

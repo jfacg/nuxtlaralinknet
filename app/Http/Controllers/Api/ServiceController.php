@@ -5,21 +5,22 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Clientixc;
 use App\Models\Loginixc;
+use App\Models\Pesqinstalacao;
 use App\Models\Service;
 use App\Models\Telegram\AlertReclamacoes;
-use App\Models\Telegram\AlertTeste;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
 
-    protected $entity, $clienteixc, $loginIxc;
+    protected $entity, $clienteixc, $loginIxc, $pesqInstalacao;
 
-    public function __construct (Service $service, Clientixc $clienteixc, Loginixc $loginIxc)
+    public function __construct (Service $service, Clientixc $clienteixc, Loginixc $loginIxc, Pesqinstalacao $pesqInstalacao)
     {
         $this->entity = $service;
         $this->clienteixc = $clienteixc;
         $this->loginIxc = $loginIxc;
+        $this->pesqInstalacao = $pesqInstalacao;
     }
 
     /**
@@ -48,8 +49,15 @@ class ServiceController extends Controller
                             ->where('clienteIdIxc', '=', $servico->clienteIdIxc)
                             ->where('tipo', '=', 'REPARO')
                             ->count();
+
+                $reparos = $this->entity
+                            ->with(['usuario', 'tecnico'])
+                            ->where('clienteIdIxc', '=', $servico->clienteIdIxc)
+                            ->where('tipo', '=', 'REPARO')
+                            ->get();
             
                 $servico->repetidas = $repetidas - 1;
+                $servico->reparos = $reparos;
                 array_push($servicos, $servico);
 
             } else {
@@ -57,9 +65,29 @@ class ServiceController extends Controller
                 array_push($servicos, $servico);
             }
         }
+
                     
 
         return response()->json($servicos, 200);
+    }
+
+    public function pesquisaInstalacoes()
+    {
+        $servicosFiltrados = [];
+        $services = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor', 'tipoReclamacao', 'pesqInstalacao'])
+                    ->where([['status', '=', 'EXECUTADO'], ['tipo', '=', 'INSTALAÇÃO']])
+                    ->orderBy('dataExecucao', 'asc')
+                    ->get();
+        foreach ($services as $servico) {
+            
+            if ($servico->pesqInstalacao->fase != "CONCLUIDO") {
+                array_push($servicosFiltrados, $servico);
+            }
+        }
+
+
+
+        return response()->json($servicosFiltrados, 200);
     }
 
     public function listarPorTecnico($idTecnico)
@@ -83,15 +111,20 @@ class ServiceController extends Controller
         return response()->json($services, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
+    
         $data = $request->all();
+
+        if ($data['tipo'] == 'INSTALAÇÃO') {
+            $pesquisa = $this->pesqInstalacao->create();
+            if (!$pesquisa) {
+                return response()->json(['error' => 'error_insert', 500]);
+            }
+            $data['pesqInstalacao_id'] = $pesquisa->id;
+        }
+        
 
         $validate = validator($data, $this->entity->rules());
         if ($validate->fails()) {
@@ -104,14 +137,16 @@ class ServiceController extends Controller
         if (!$service) {
             return response()->json(['error' => 'error_insert', 500]);
         }
+       
 
         if ($service->tipo == 'REPARO') {
             $repetidas = $this->entity
+                        ->with(['cliente', 'usuario', 'tecnico', 'vendedor', 'tipoReclamacao'])
                         ->where('clienteIdIxc', '=', $service->clienteIdIxc)
                         ->where('tipo', '=', 'REPARO')
                         ->count();
         
-            if ($repetidas > 0) {
+            if ($repetidas > 1) {
                 $reparos = $this->entity
                         ->where('clienteIdIxc', '=', $service->clienteIdIxc)
                         ->where('tipo', '=', 'REPARO')
@@ -121,8 +156,17 @@ class ServiceController extends Controller
                 $texto = "########\n".$repetidas." RECLAMAÇÕES \n########";
                 
                 foreach ($reparos as $reparo) {
-                    $texto = $texto."\n\nCliente: ".$reparo->clienteNome."\nReclamação: ".$reparo->relatoCliente."\nReclamante: ".$reparo->reclamante
+
+                    if ($reparo->status == 'EXECUTADO') {
+                        $texto = $texto."\n\nCliente: ".$reparo->clienteNome."\nReclamação: ".$reparo->relatoCliente."\nReclamante: ".$reparo->reclamante
+                        ."\nBaixa: ".$reparo->observacao."\nTécnico : ".$reparo->tecnico->nick_name."\nStatus: ".$reparo->status."\nData: ".$reparo->dataExecucao;
+                    } else {
+                        $texto = $texto."\n\nCliente: ".$reparo->clienteNome."\nReclamação: ".$reparo->relatoCliente."\nReclamante: ".$reparo->reclamante
                                 ."\nBaixa: ".$reparo->observacao."\nStatus: ".$reparo->status."\nData: ".$reparo->dataExecucao;
+                    }
+
+
+                    
                 }
 
                 AlertReclamacoes::enviarMensagem($texto);
@@ -132,15 +176,10 @@ class ServiceController extends Controller
         return response()->json($service, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function show($id)
     {
-        $service = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor', 'tipoReclamacao'])->find($id);
+        $service = $this->entity->with(['cliente', 'usuario', 'tecnico', 'vendedor', 'tipoReclamacao', 'pesqInstalacao'])->find($id);
 
         if ($service->clienteIdIxc != null) {
            $cliente =  $this->clienteixc->find($service->clienteIdIxc);
@@ -187,15 +226,6 @@ class ServiceController extends Controller
         return "$parte1.$parte2.$parte3-$parte4";
     }
 
- 
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $data = $request->all();
