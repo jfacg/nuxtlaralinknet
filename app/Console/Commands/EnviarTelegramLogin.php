@@ -54,7 +54,9 @@ class EnviarTelegramLogin extends Command
 
     public function loginoffline()
     {
-        $offatual = Loginixc::where('online', '=', 'N')->count();
+        $offatual = Loginixc::where('online', '=', 'N')
+                            ->where('ativo', '=', 'S')
+                            ->count();
 
         $offanterior = Offline::orderBy('id', 'desc')->first();
 

@@ -20,31 +20,8 @@ class ClientIxcController extends Controller
 
     public function loginoffline($status)
     {
-
-        $offfline1 = $this->loginIxc ->where('online', '=', 'N')
+        $offfline = $this->loginIxc ->where('online', '=', 'N')
                         ->count();
-
-        // if ($status) {
-        //     $offfline1 = $this->loginIxc ->where('online', '=', 'N')
-        //                 ->count();
-
-        //     while ($status) {
-        //         $offfline2 = $this->loginIxc ->where('online', '=', 'N')
-        //                 ->count();
-        //         $caiu = $offfline2 - $offfline1;
-
-        //         if ($caiu > 1) {
-        //             AlertTeste::enviarMensagem("Caiu: ".$caiu);
-        //         }
-        //     }
-
-
-        // }
-
-
-        // $offfline = $this->loginIxc ->where('online', '=', 'N')
-        //                 ->count();
-
         $logins = $this->loginIxc ->where('online', '=', 'N')
                     ->orderBy('ultima_conexao_final', 'desc')
                     ->get(['id', 'id_cliente', 'senha', 'login', 'mac', 'onu_mac', 'ultima_conexao_final'  ]);

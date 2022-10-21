@@ -79,9 +79,10 @@ class ServiceController extends Controller
                     ->orderBy('dataExecucao', 'asc')
                     ->get();
         foreach ($services as $servico) {
-            
-            if ($servico->pesqInstalacao->fase != "CONCLUIDO") {
-                array_push($servicosFiltrados, $servico);
+            if ($servico->pesqInstalacao) {
+                if ($servico->pesqInstalacao->fase != "CONCLUIDO") {
+                    array_push($servicosFiltrados, $servico);
+                }
             }
         }
 

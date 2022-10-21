@@ -18,12 +18,14 @@ class AddMudancaToServicesTable extends Migration
             $table->string('cep')->nullable();
             $table->string('logradouro')->nullable();
             $table->string('numero')->nullable();
+            $table->string('complemento')->nullable();
             $table->string('bairro')->nullable();
             $table->string('cidade')->nullable();
             $table->string('uf')->nullable();
             $table->string('antigoCep')->nullable();
             $table->string('antigoLogradouro')->nullable();
             $table->string('antigoNumero')->nullable();
+            $table->string('antigoComplemento')->nullable();
             $table->string('antigoBairro')->nullable();
             $table->string('antigaCidade')->nullable();
             $table->string('antigaUf')->nullable();

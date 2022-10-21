@@ -30,6 +30,30 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    public function desbloqueados()
+    {
+        $users = $this->entity->with(['roles', 'empresa'])->get();
+        $funcoes = ['BLOQUEADO', 'Parceiro', 'DSNET', 'CGTELECOM', 'Vendedor'];
+
+        $usuarios = [];
+
+        for ($i=0; $i < $users->count(); $i++) { 
+            $count = 0; 
+            for ($j=0; $j < sizeof($funcoes); $j++) {
+                if ($users[$i]->roles[0]->name == $funcoes[$j]) {
+                   $count = $count + 1; 
+                }
+            }
+            
+            if ($count == 0) {
+                array_push($usuarios, $users[$i]);
+            }
+
+        }
+       
+        return response()->json($usuarios);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

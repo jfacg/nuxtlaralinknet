@@ -21,11 +21,11 @@ class CreateServicesTable extends Migration
             $table->dateTime('dataVencimento')->nullable();
             $table->dateTime('dataExecucao')->nullable();
             $table->dateTime('dataFechamento')->nullable();
-            $table->integer('vencimento');
+            $table->integer('vencimento')->nullable();
             $table->double('valorInstalacao', 8, 2)->default(0);
-            $table->string('pagamento');
+            $table->string('pagamento')->nullable();
             $table->text('observacao')->nullable();
-            $table->text('plano');
+            $table->text('plano')->nullable();
             $table->double('valorPlano', 8, 2)->default(0);
             $table->string('status');
             $table->text('historico')->nullable();
@@ -36,9 +36,9 @@ class CreateServicesTable extends Migration
 
 
             $table->unsignedBigInteger('usuario_id');
-            $table->unsignedBigInteger('vendedor_id');
+            $table->unsignedBigInteger('vendedor_id')->nullable();
             $table->unsignedBigInteger('tecnico_id')->nullable();
-            $table->unsignedBigInteger('cliente_id');
+            $table->unsignedBigInteger('cliente_id')->nullable();
 
             $table->foreign('usuario_id')
                         ->references('id')

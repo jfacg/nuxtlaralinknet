@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
         /**
      * Routes Users
      */
+    Route::get('desbloqueados', [UserController::class, 'desbloqueados']);
     Route::get('/{id}', [UserController::class, 'show']);
     Route::get('', [UserController::class, 'index']);
     Route::post('', [UserController::class, 'store']);
