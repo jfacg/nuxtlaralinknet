@@ -75,10 +75,10 @@ class Service extends Model
             'usuario_id' => ['numeric'],
             'tecnico_id' => ['nullable', 'numeric'],
             'cliente_id' => ['nullable','numeric'],
-            'tipoReclamacao_id' => ['required'],
-            'reclamante' => [ 'required'],
-            'relatoCliente' => [ 'required'],
-            'dataAgendamento' => [ 'required'],
+            // 'tipoReclamacao_id' => ['required'],
+            // 'reclamante' => [ 'required'],
+            // 'relatoCliente' => [ 'required'],
+            // 'dataAgendamento' => [ 'required'],
         ];
 
         return $rules;
